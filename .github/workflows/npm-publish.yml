@@ -1,0 +1,53 @@
+# Este workflow ejecutará pruebas utilizando Node.js y luego publicará el paquete en npm cuando se cree una nueva release.
+# Para más información, visita: https://docs.github.com/es/actions/publishing-packages/publishing-nodejs-packages
+
+name: Publicar SwiftTS en npm
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Ejecutar pruebas
+        run: npm test
+
+  publish-npm:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org/
+
+      - name: Configurar autenticación de npm
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Compilar el proyecto
+        run: npm run build
+
+      - name: Publicar en npm
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
