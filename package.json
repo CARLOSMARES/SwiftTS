@@ -1,0 +1,16 @@
+{
+  "name": "swiftts",
+  "version": "1.0.0",
+  "description": "Un framework ligero para construir APIs REST con TypeScript y SWC",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "framework",
+    "api-framework",
+    "SwiftTS"
+  ],
+  "author": "Carlos Ignacio Olano Mares",
+  "license": "MIT"
+}
